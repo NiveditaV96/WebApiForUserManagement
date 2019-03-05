@@ -1,5 +1,0 @@
-C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\User\bin\Debug\User.dll
-C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\User\bin\Debug\User.pdb
-C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\User\obj\Debug\User.dll
-C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\User\obj\Debug\User.pdb
-C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\User\obj\Debug\User.csprojResolveAssemblyReference.cache
