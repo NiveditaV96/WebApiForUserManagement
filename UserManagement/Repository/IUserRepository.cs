@@ -9,18 +9,17 @@ namespace UserManagement.Repository
 {
     public interface IUserRepository
     {
-        //for now create user has only 2 parameters
-        //role to be added
-        bool CreateUser(string Username, string Password);
+        
+        bool CreateUser(string Username, string Password, string Role);
 
         //change para
         bool UpdateUser(UserModel user);
-        bool ValidateUser(string Username, string Password);
+        int LoginUser(string Username, string Password);
 
-        IEnumerable<UserModel> GetRoles(int UserId);
+        IEnumerable<UserModel> GetRoles(string UserId);
         IEnumerable<UserModel> GetUsersByRole(string Role);
         IEnumerable<UserModel> GetUsersBySearchKeyword(string searchKeyword);
 
-        bool Delete(int UserId);
+        bool DeleteUser(string UserName, string Password);
     }
 }

@@ -10,7 +10,7 @@ namespace UserManagement.Models
         string mobileAlias;
         public string ApplicationId { get; set; }
 
-        public string UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public string Username { get; set; }
 

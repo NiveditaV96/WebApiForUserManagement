@@ -18,17 +18,17 @@ namespace UserManagement.Controllers
         {
             _irepos = irepos;
         }
-      
 
-        [Route("UserCreation/{Username}/{Password}")]
+
+        [Route("UserCreation/{Username}/{Password}/{Role}")]
         [HttpPost]
-     
-        public IHttpActionResult UserCreation(string Username, string Password)
-        {
-            
-            bool creationStatus = _irepos.CreateUser(Username, Password);
 
-            if(creationStatus)
+        public IHttpActionResult UserCreation(string Username, string Password, string Role)
+        {
+
+            bool creationStatus = _irepos.CreateUser(Username, Password, Role);
+
+            if (creationStatus)
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "User created successfully"));
             }
@@ -38,30 +38,55 @@ namespace UserManagement.Controllers
                 return BadRequest("User Creation failed.");
 
             }
-          
+
         }
 
-       
+
 
         [Route("UserLogin/{Username}/{Password}")]
         [HttpGet]
         public IHttpActionResult UserLogin(string Username, string Password)
         {
-            bool validationStatus = _irepos.ValidateUser(Username, Password);
+            int validationStatus = _irepos.ValidateUser(Username, Password);
 
-            if(validationStatus)
+            if (validationStatus == 1)
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Login successful."));
             }
 
-           
-            else 
+
+            else if (validationStatus == 0)
             {
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Invalid Username or Password."));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Please enter the correct password."));
                 //return BadRequest("Sorry. Invalid Username or Password.");
             }
 
+            else
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "Username does not exist."));
+            }
 
+
+
+
+        }
+
+        [Route("DeleteUser/{UserName}/{Password}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteUser(string UserName, string Password)
+        {
+            bool deleteUserStatus = _irepos.DeleteUser(UserName, Password);
+           // string Userid = UserId;
+
+            if(deleteUserStatus)
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK,"Requested user has been deleted."));
+            }
+
+            else
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NotFound, "Requested user has not been deleted."));
+            }
 
         }
     }

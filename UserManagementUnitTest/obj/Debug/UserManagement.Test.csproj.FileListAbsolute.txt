@@ -1,0 +1,12 @@
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\UserManagementUnitTest.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\UserManagementUnitTest.pdb
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\obj\Debug\UserManagement.Test.csprojResolveAssemblyReference.cache
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\obj\Debug\UserManagementUnitTest.dll
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagementUnitTest\obj\Debug\UserManagementUnitTest.pdb

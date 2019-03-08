@@ -39,7 +39,6 @@ C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManag
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\System.Web.Http.WebHost.xml
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\obj\Debug\UserManagement.dll
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\obj\Debug\UserManagement.pdb
-C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\obj\Debug\UserManagement.csprojResolveAssemblyReference.cache
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\Autofac.dll
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\Autofac.Integration.WebApi.dll
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\NLog.dll
@@ -49,3 +48,4 @@ C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManag
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\Autofac.Integration.WebApi.pdb
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\Autofac.Integration.WebApi.xml
 C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\bin\NLog.xml
+C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\obj\Debug\UserManagement.csprojResolveAssemblyReference.cache
