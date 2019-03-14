@@ -10,18 +10,7 @@ namespace UserManagement.Test.UserRepositoryTest
     {
         IUserRepository _iUserRepo = Substitute.For<IUserRepository>();
 
-        //[TestMethod] 
-        //public void UserCreation_RegistersAValidUser()
-        //{
-        //    //arrange
-        //    string Username = '';
-        //    string Password = '';
 
-            
-
-        //    //act
-        //    //assert
-        //}
 
         [TestMethod]
         public void CreateUserTest_ReturnsTrue()
@@ -34,7 +23,27 @@ namespace UserManagement.Test.UserRepositoryTest
             bool expectedResult = true;
 
             //act
-            bool actual =_iUserRepo.CreateUser(Username, Password, Role);
+            bool actual = _iUserRepo.CreateUser(Username, Password, Role);
+
+            //assert
+            Assert.AreEqual(expectedResult, actual);
+
+
+        }
+
+        [TestMethod]
+        public void LoginUser_ReturnsOne()
+        {
+            //arrange
+            string Username = "User1";
+            string Password = "Pwd@1";
+            
+
+            int expectedResult = 1;
+            Console.WriteLine($"expected result {expectedResult}");
+            //act
+            int actual = _iUserRepo.LoginUser(Username, Password);
+            Console.WriteLine($"actual result {actual}");
 
             //assert
             Assert.AreEqual(expectedResult, actual);

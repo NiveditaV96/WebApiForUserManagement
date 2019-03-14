@@ -24,18 +24,19 @@ namespace UserManagement.Repository
         {
            
             
-            string insertUN = "Insert Into aspnet_Users ([ApplicationId], [UserId], [UserName], [LoweredUserName], [LastActivityDate] )" +
-                          "values((select[ApplicationId] from aspnet_Applications where ApplicationName = 'UserApplication'), NEWID(), '" + Username + "', LOWER('" + Username + "'), GETDATE())";
+            string insertUserName = "Insert Into aspnet_Users ([ApplicationId], [UserId], [UserName], [LoweredUserName], [LastActivityDate] )" +
+                              "values((select[ApplicationId] from aspnet_Applications where ApplicationName = 'UserApplication'), NEWID(), '"
+                              + Username + "', LOWER('" + Username + "'), GETDATE())";
 
-            string insertPW = "Insert Into aspnet_Membership ([ApplicationId], [UserId], [Password], [PasswordFormat], [PasswordSalt], [IsApproved], [IsLockedOut], [CreateDate]," +
+            string insertPassword = "Insert Into aspnet_Membership ([ApplicationId], [UserId], [Password], [PasswordFormat], [PasswordSalt], [IsApproved], [IsLockedOut], [CreateDate]," +
                               " [LastLoginDate],[LastPasswordChangedDate], [LastLockoutDate], [FailedPasswordAttemptCount], [FailedPasswordAttemptWindowStart],[FailedPasswordAnswerAttemptCount], " +
                               "[FailedPasswordAnswerAttemptWindowStart]) values ((select[ApplicationId] from aspnet_Users where UserName = '" + Username + "'), " +
                               "(select[UserId] from aspnet_Users where UserName = '" + Username + "'), '" + Password + "', 0, "+
                               "'NA', 0, 0, GETDATE(), GETDATE(), GETDATE(), GETDATE(), 0, GETDATE(), 0, GETDATE())";
 
             
-            string insertRole = "Insert into[dbo].[aspnet_UsersInRoles] (UserId, RoleId) select u.UserId,r.RoleId from[aspnet_Users] u inner join[aspnet_Roles] r on u.ApplicationId = r.ApplicationId " +
-                                "inner join[dbo].[aspnet_Applications] a on r.ApplicationId=a.ApplicationId where u.[UserName] = '" + Username + "' and a.[ApplicationName] = 'UserApplication' " +
+            string insertRole = "Insert into [dbo].[aspnet_UsersInRoles] (UserId, RoleId) select u.UserId,r.RoleId from[aspnet_Users] u inner join[aspnet_Roles] r on u.ApplicationId = r.ApplicationId " +
+                                "inner join [dbo].[aspnet_Applications] a on r.ApplicationId=a.ApplicationId where u.[UserName] = '" + Username + "' and a.[ApplicationName] = 'UserApplication' " +
                                 "and r.RoleName= '"+Role+"'";
 
 
@@ -45,14 +46,15 @@ namespace UserManagement.Repository
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmdForUN = new SqlCommand(insertUN, con);
+                    SqlCommand cmdForUN = new SqlCommand(insertUserName, con);
                     con.Open();
                     cmdForUN.ExecuteReader();
+                    
                 }
 
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmdForPW = new SqlCommand(insertPW, con);
+                    SqlCommand cmdForPW = new SqlCommand(insertPassword, con);
                     con.Open();
                     cmdForPW.ExecuteReader();
                 }
@@ -65,6 +67,7 @@ namespace UserManagement.Repository
                 }
                 return true;
             }
+
             catch (Exception e)
             {
                 throw e;
@@ -135,15 +138,6 @@ namespace UserManagement.Repository
         /// <returns></returns>
         public int LoginUser(string Username, string Password)
         {
-
-
-            // string usernameQuery = "select count([UserName]) from aspnet_Users where UserName = '" + Username + "' " +
-            // "and ApplicationId = (select ApplicationId from aspnet_Applications where [ApplicationName] = 'UserApplication')";
-
-            //  string passwordQuery = "select count([Password]) from aspnet_Membership  where Password = '" + Password + "'" +
-            //  "and ApplicationId = (select ApplicationId from aspnet_Applications where [ApplicationName] = 'UserApplication') and " +
-            //  "UserId = (select UserId from aspnet_Users where UserName='"+ Username +"')";
-
             string userIdCountQuery = "select count(m.[UserId]) from[dbo].[aspnet_Users] u inner join[dbo].[aspnet_Membership] m" +
                                       "on u.UserId = m.UserId" +
                                       "where m.[Password] = '" + Password + "' and u.[UserName] = '" + Username + "'" +
@@ -187,21 +181,94 @@ namespace UserManagement.Repository
 
         }
 
-
-
-
-
-
-
-
-        //3
-    public bool UpdateUser(UserModel user)
+     /// <summary>
+     /// Updates current Username with new username
+     /// </summary>
+     /// <param name="currentUsername"></param>
+     /// <param name="newUsername"></param>
+     /// <returns></returns>
+    public bool UpdateUserName(string currentUsername, string newUsername)
     {
-        throw new NotImplementedException();
+            string updateUserNameQuery = "update[dbo].[aspnet_Users]" +
+                                         "set [UserName] = '" + newUsername + "', [LoweredUserName] = lower('" + newUsername + "')" +
+                                         "where [ApplicationId] = (select [ApplicationId] from [dbo].[aspnet_Applications] " +
+                                         "where [ApplicationName]='UserApplication')" +
+                                         "and [UserName] = '" + currentUsername + "'";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmdUpdaterUsername = new SqlCommand(updateUserNameQuery, con);
+                    con.Open();
+                    int rowUpdateCount = cmdUpdaterUsername.ExecuteNonQuery();
+                    if (rowUpdateCount != 0)
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+            }
+
+            catch (Exception e)
+            {
+                throw e;
+            }
+            //int a = NewCmd.ExecuteNonQuery();
+
+            //string
+            //throw new NotImplementedException();
     }
 
-   
-       
+
+    /// <summary>
+    /// Updates current User role with new user role
+    /// </summary>
+    /// <param name="currentUsername"></param>
+    /// <param name="currentRole"></param>
+    /// <param name="newRole"></param>
+    /// <returns></returns>
+    public bool UpdateUserRole(string currentUsername, string currentRole, string newRole)
+    {
+            string updateUserRoleQuery = "update [dbo].[aspnet_UsersInRoles]" +
+                                         "set [RoleId] = (select [RoleId] from [dbo].[aspnet_Roles] where [RoleName] = '" + newRole + "'" +
+                                         " and [ApplicationId] = (select [ApplicationId] from [dbo].[aspnet_Applications] where [ApplicationName] = 'UserApplication'))" +
+                                         "where [RoleId] = (select [RoleId] from [dbo].[aspnet_Roles] where [RoleName] = '" + currentRole + "' " +
+                                         "and [ApplicationId] = (select [ApplicationId] from [dbo].[aspnet_Applications] where [ApplicationName] = 'UserApplication'))" +
+                                         "and [UserId] = (select [UserId] from [dbo].[aspnet_Users] where [UserName] = '" + currentUsername + "')";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmdUpdaterUserRole = new SqlCommand(updateUserRoleQuery, con);
+                    con.Open();
+                    int rowUpdateCount = cmdUpdaterUserRole.ExecuteNonQuery();
+                    if (rowUpdateCount != 0)
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+            }
+
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+            throw new NotImplementedException();
+    }
+     
+    /// <summary>
+    /// Deletes a user record
+    /// </summary>
+    /// <param name="UserName"></param>
+    /// <param name="Password"></param>
+    /// <returns></returns>
     public bool DeleteUser(string UserName, string Password)
     {
             UserModel user = new UserModel();
@@ -279,15 +346,62 @@ namespace UserManagement.Repository
 
     }
 
-    public IEnumerable<UserModel> GetRoles(string UserId)
-    {
-        throw new NotImplementedException();
-    }
+   
 
-    public IEnumerable<UserModel> GetUsersByRole(string Role)
+        /// <summary>
+        /// Get users with a particular role corresponding to a particular application name -- check
+        /// </summary>
+        /// <param name="Role"></param>
+        /// <returns></returns>
+    public List<string> GetUsersByRole(string Role)
     {
-        throw new NotImplementedException();
-    }
+            string getUsersByRoleQuery = "SELECT u.UserName FROM dbo.aspnet_Users u INNER JOIN dbo.aspnet_UsersInRoles ur" +
+                                         "ON u.UserId = ur.UserId INNER JOIN [dbo].[aspnet_Applications] a " +
+                                         "ON u.ApplicationId = a.ApplicationId" +
+                                         "WHERE  u.ApplicationId = (select ApplicationId from aspnet_Applications WHERE [ApplicationName] = 'UserApplication')" +
+                                         "AND ur.RoleId in (select [RoleId] from [dbo].[aspnet_Roles] where [RoleName] = '" + Role + "')" +
+                                         "ORDER BY u.UserName";
+
+            List<string> usernameList = new List<string>();
+
+        
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmdUsers = new SqlCommand(getUsersByRoleQuery, con);
+                    con.Open();
+                    SqlDataReader dr = cmdUsers.ExecuteReader();
+
+                    //Object[] username = new Object[dr.FieldCount];
+
+
+                    
+                    foreach (string username in usernameList)
+                    {
+
+                    }
+
+                    while (dr.Read())
+                    {
+                        string username = dr["UserName"].ToString();
+                        usernameList.Add(username);
+                        //int count = dr.GetValues(username);
+                    }
+
+                    return usernameList;
+                }
+            }
+
+
+             catch (Exception e)
+            {
+                throw e;
+            }
+
+            
+        }
 
     public IEnumerable<UserModel> GetUsersBySearchKeyword(string searchKeyword)
     {
