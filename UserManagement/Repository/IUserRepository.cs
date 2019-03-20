@@ -10,18 +10,18 @@ namespace UserManagement.Repository
     public interface IUserRepository
     {
         
-        bool CreateUser(string Username, string Password, string Role);
+        bool CreateUser(string username, string password, string role);
 
-        int LoginUser(string Username, string Password);
+        int LoginUser(string username, string password);
 
         bool UpdateUserName(string currentUsername, string newUsername);
         bool UpdateUserRole(string currentUsername, string currentRole, string newRole);
 
-        List<string> GetUsersByRole(string Role);
+        IEnumerable<string> GetUsersByRole(string role);
 
         //
         IEnumerable<UserModel> GetUsersBySearchKeyword(string searchKeyword);
 
-        bool DeleteUser(string UserName, string Password);
+        bool DeleteUser(string userName);
     }
 }

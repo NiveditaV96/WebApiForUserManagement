@@ -7,6 +7,7 @@ using Autofac.Integration.WebApi;
 using System.Reflection;
 using UserManagement.Repository;
 using UserManagement.Models;
+using System.Resources;
 
 namespace UserManagement
 {
@@ -26,7 +27,17 @@ namespace UserManagement
           
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
+
+            //check this dot resolve all the contents of the container at a time
+            // resolve as when its required
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+            //ResourceManager rm = new ResourceManager("UsingRESX.UserControllerMessages",
+            //    Assembly.GetExecutingAssembly());
+            //String strWebsite = rm.GetString("Website", CultureInfo.CurrentCulture);
+            //String strName = rm.GetString("Name");
+            //form1.InnerText = "Website: " + strWebsite + "--Name: " + strName;
+
 
 
             // Web API routes
