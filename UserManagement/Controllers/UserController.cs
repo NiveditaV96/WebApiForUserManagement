@@ -20,7 +20,7 @@ namespace UserManagement.Controllers
     {
         IUserRepository _irepository;
 
-        //ResourceManager rm = new ResourceManager("UserControllerMessages",
+        //ResourceManager rm = new ResourceManager("UsingRESX.UserControllerMessages",
         //        Assembly.GetExecutingAssembly());
 
         public UserController(IUserRepository irepository)
@@ -31,7 +31,7 @@ namespace UserManagement.Controllers
         //include exception handling here 
         //make a separate ctlr for login
 
-        [Route("Create/{username}/{password}/{role}")]
+        [Route("Create")]
         [HttpPost]
 
         //public IHttpActionResult Create([FromBody]string username, [FromBody]string password, [FromBody]string role)
@@ -46,52 +46,63 @@ namespace UserManagement.Controllers
 
                 var creationStatus = _irepository.CreateUser(username, password, role);
 
-                if (creationStatus)
+                if (creationStatus == 0)
                 {
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, $"User created {username} successfully."));
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.PreconditionFailed, "User creation failed"));
                     // return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, rm.GetString("creationSuccessful")));
 
                 }
 
+                else if(creationStatus == 1)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.PreconditionFailed, "Password creation failed."));
+                   
+                }
+
+                else if(creationStatus==2)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.PreconditionFailed, "Role creation failed."));
+                }
+
                 else
                 {
-                    return BadRequest("User Creation failed.");
-
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, "User created successfully."));
                 }
             }
             catch(Exception)
             {
+                throw;
                 //              System.Resources.MissingManifestResourceException occurred
                 //HResult = 0x80131532
 
                 //Message = Could not find any resources appropriate for the specified culture or the neutral culture.Make sure 
                 //"UsingRESX.UserControllerMessages.resources" was correctly embedded or linked into assembly "UserManagement" at compile time, 
                 //or that all the satellite assemblies required are loadable and fully signed.
-  //  Source =< Cannot evaluate the exception source >
-  //  StackTrace:
+                //  Source =< Cannot evaluate the exception source >
+                //  StackTrace:
 
-  //   at System.Resources.ManifestBasedResourceGroveler.HandleResourceStreamMissing(String fileName)
-  
-  //   at System.Resources.ManifestBasedResourceGroveler.GrovelForResourceSet(CultureInfo culture, Dictionary`2 localResourceSets, Boolean tryParents, Boolean createIfNotExists, StackCrawlMark & stackMark)
-  
-  //   at System.Resources.ResourceManager.InternalGetResourceSet(CultureInfo requestedCulture, Boolean createIfNotExists, Boolean tryParents, StackCrawlMark & stackMark)
-  
-  //   at System.Resources.ResourceManager.InternalGetResourceSet(CultureInfo culture, Boolean createIfNotExists, Boolean tryParents)
-  
-  //   at System.Resources.ResourceManager.GetString(String name, CultureInfo culture)
-  
-  //   at System.Resources.ResourceManager.GetString(String name)
-  
-  //   at UserManagement.Controllers.UserController.UserCreation(String Username, String Password, String Role) in C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\Controllers\UserController.cs:line 62
-  
-  //   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<> c__DisplayClass10.< GetExecutor > b__9(Object instance, Object[] methodParameters)
-  
-  //   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
-  
-  //   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
-  
+                //   at System.Resources.ManifestBasedResourceGroveler.HandleResourceStreamMissing(String fileName)
 
-                  throw;
+                //   at System.Resources.ManifestBasedResourceGroveler.GrovelForResourceSet(CultureInfo culture, Dictionary`2 localResourceSets, Boolean tryParents, Boolean createIfNotExists, StackCrawlMark & stackMark)
+
+                //   at System.Resources.ResourceManager.InternalGetResourceSet(CultureInfo requestedCulture, Boolean createIfNotExists, Boolean tryParents, StackCrawlMark & stackMark)
+
+                //   at System.Resources.ResourceManager.InternalGetResourceSet(CultureInfo culture, Boolean createIfNotExists, Boolean tryParents)
+
+                //   at System.Resources.ResourceManager.GetString(String name, CultureInfo culture)
+
+                //   at System.Resources.ResourceManager.GetString(String name)
+
+                //   at UserManagement.Controllers.UserController.UserCreation(String Username, String Password, String Role) in C:\Users\ee210680\Documents\Visual Studio 2017\Projects\UserManagement\UserManagement\Controllers\UserController.cs:line 62
+
+                //   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<> c__DisplayClass10.< GetExecutor > b__9(Object instance, Object[] methodParameters)
+
+                //   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+
+                //   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+
+
+
                 //throw new InvalidOperationException("User creation");
             }
 
@@ -125,23 +136,28 @@ namespace UserManagement.Controllers
         //}
         
         [HttpPut]
-        [Route("UpdateUserName/{currentUsername}/{newUsername}")]
+        [Route("UpdateUserName")]
         public IHttpActionResult UpdateUserName(string currentUsername, string newUsername)
         {
-            bool updateUsernameStatus = _irepository.UpdateUserName(currentUsername, newUsername);
+           
+            
+                bool updateUsernameStatus = _irepository.UpdateUserName(currentUsername, newUsername);
 
-            if(updateUsernameStatus)
-            {
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Username updated."));
-            }
-            else
-            {
-                return BadRequest("Username updation failed. Please retry.");
-            }
+                if (updateUsernameStatus)
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Username updated."));
+                }
+                else
+                {
+                    return BadRequest("Username updation failed. Please retry.");
+                }
+            
+
+           
         }
 
         [HttpPut]
-        [Route("UpdateUserRole/{currentUsername}/{currentRole}/{newRole}")]
+        [Route("UpdateUserRole")]
         public IHttpActionResult UpdateUserRole(string currentUsername, string currentRole, string newRole)
         {
             bool updateUserRoleStatus = _irepository.UpdateUserRole(currentUsername, currentRole, newRole);
@@ -159,7 +175,7 @@ namespace UserManagement.Controllers
         }
 
 
-        [Route("Delete/{UserName}")]
+        [Route("Delete")]
         [HttpDelete]
         public IHttpActionResult Delete(string userName)
         {

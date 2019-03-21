@@ -10,7 +10,7 @@ namespace UserManagement.Repository
     public interface IUserRepository
     {
         
-        bool CreateUser(string username, string password, string role);
+        int CreateUser(string username, string password, string role);
 
         int LoginUser(string username, string password);
 

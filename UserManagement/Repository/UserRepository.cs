@@ -6,13 +6,14 @@ using System.Data.SqlClient;
 
 namespace UserManagement.Repository
 {
+    enum userCreateStatus { UserCreationFailed, PasswordCreationFailed, RoleCreationFailed, Sucessful };
     public class UserRepository : IUserRepository
     {
         //change conncn string name here
         //it needs to be related
         string connectionString = ConfigurationManager.ConnectionStrings["SqlConString"].ConnectionString;
        
-
+        
        
         /// <summary>
         ///  Method to create user.
@@ -21,7 +22,7 @@ namespace UserManagement.Repository
         /// <param name="password"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        public bool CreateUser(string username, string password, string role)
+        public int CreateUser(string username, string password, string role)
         {
            
             
@@ -55,7 +56,7 @@ namespace UserManagement.Repository
 
                         if (userRowsAffected == 0)
                         {
-                            return false;
+                            return (int)userCreateStatus.UserCreationFailed;
                         }
 
                         else
@@ -65,7 +66,7 @@ namespace UserManagement.Repository
 
                             if (membesrshipRowsAffected == 0)
                             {
-                                return false;
+                                return (int)userCreateStatus.PasswordCreationFailed;
                             }
 
                             else
@@ -75,10 +76,10 @@ namespace UserManagement.Repository
 
                                 if (roleRowsAffected == 0)
                                 {
-                                    return false;
+                                    return (int)userCreateStatus.RoleCreationFailed;
                                 }
 
-                                return true;
+                                return (int)userCreateStatus.Sucessful;
                             }
 
                         }
@@ -88,25 +89,12 @@ namespace UserManagement.Repository
                     }
                 }
 
-                //using (SqlConnection con = new SqlConnection(connectionString))
-                //{
-                //    SqlCommand cmdForPW = new SqlCommand(insertPassword, con);
-                //    con.Open();
-                //    cmdForPW.ExecuteReader();
-                //}
-
-                //using (SqlConnection con = new SqlConnection(connectionString))
-                //{
-                //    SqlCommand cmdForRole = new SqlCommand(insertRole, con);
-                //    con.Open();
-                //    cmdForRole.ExecuteReader();
-                //}
-                //return true;
+              
             }
             catch (System.Data.SqlClient.SqlException e)
             {
                 throw new SqlException("");
-                //how to pass message to this exception??
+                //pass message to this exception??
             }
             catch (Exception)
             {
@@ -333,14 +321,9 @@ namespace UserManagement.Repository
                                     "where u.UserName='"+ userName + "' and "+
                                     "a.ApplicationId = (select ApplicationId from [dbo].[aspnet_Applications] where ApplicationName = 'UserApplication')";
 
-
-            string deleteUserFromUsersQuery;
-            string deleteUserFromMembershipQuery;
-            string deleteUserFromUsersInRolesQuery;
-
-            deleteUserFromUsersInRolesQuery = "delete from aspnet_UsersInRoles where UserId = '" + user.UserID + "'";
-            deleteUserFromMembershipQuery = "delete from aspnet_Membership where UserId = '" + user.UserID + "'";
-            deleteUserFromUsersQuery = "delete from aspnet_Users where UserId = '" + user.UserID + "'";
+            string deleteUserFromUsersInRolesQuery = "delete from aspnet_UsersInRoles where UserId = '" + user.UserID + "'";
+            string deleteUserFromMembershipQuery = "delete from aspnet_Membership where UserId = '" + user.UserID + "'";
+            string deleteUserFromUsersQuery = "delete from aspnet_Users where UserId = '" + user.UserID + "'";
 
             try
             {
